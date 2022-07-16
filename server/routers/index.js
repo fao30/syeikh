@@ -7,7 +7,7 @@ let router = express.Router();
 router.get("/data-all", userAut, Controller.getAllData); //making
 router.post("/login", Controller.login); //login to the server
 router.get("/all-visitor",userAut, Controller.allVisitor); //get all visitor
-router.get("/all-user", Controller.allUser); //making
+router.get("/all-user",userAut, Controller.allUser); //making
 router.post("/register-user",userAut, restrictedOnly, Controller.registerUser); //register tema
 router.post("/register-visitor",userAut, Controller.registerVisitor); //register patient
 router.get("/all-visit",userAut, Controller.allVisit); //get all visitor data

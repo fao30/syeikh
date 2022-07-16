@@ -159,10 +159,34 @@ class Controller {
     }
   }
 
-  //Get all data visit 
+  //Get all data visit
   static async getAllData(req, res, next) {
     try {
-      let response = await Data.findAll();
+      let response = await Data.findAll({
+        include: [
+          {
+            model: User,
+            as: "adminFkId",
+            attributes: ["name", "email"],
+          },
+          {
+            model: User,
+            as: "doctorFkId",
+            attributes: ["id", "name", "email"],
+          },
+          {
+            model: User,
+            as: "creatorFkId",
+            attributes: ["id", "name", "email"],
+          },
+          {
+            model: User,
+            as: "updatorFkId",
+            attributes: ["id", "name", "email"],
+          },
+          { model: Visitor, attributes: ["id", "name", "phone"] },
+        ],
+      });
       res.status(200).json(response);
     } catch (err) {
       next(err);

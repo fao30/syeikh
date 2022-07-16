@@ -1,6 +1,9 @@
 import {
   ITEMS_LOADING,
   DATA_VISITOR,
+  ALL_DOCTORS,
+  ALL_PATIENTS,
+  ALL_USERS,
   ISLOGIN,
   DELETEMOVIE,
   ADD_MOVIE,
@@ -8,6 +11,9 @@ import {
 
 const initialState = {
   dataVisits: [],
+  userLists: [],
+  doctorLists: [],
+  patientLists: [],
   singleData: {},
   isLoading: true,
   isLogin: false,
@@ -16,12 +22,34 @@ const initialState = {
 
 export default function itemReducer(state = initialState, action) {
   switch (action.type) {
+    //INI DATA USERS
+    case ALL_USERS:
+      console.log(action);
+      return {
+        ...state,
+        isLoading: false,
+        userLists: action.payload,
+      };
     //INI DATA VISIT
     case DATA_VISITOR:
       return {
         ...state,
         isLoading: false,
         dataVisits: action.payload,
+      };
+    //INI DATA VISIT
+    case ALL_DOCTORS:
+      return {
+        ...state,
+        isLoading: false,
+        doctorLists: action.payload,
+      };
+    //INI DATA VISIT
+    case ALL_PATIENTS:
+      return {
+        ...state,
+        isLoading: false,
+        patientLists: action.payload,
       };
     case ITEMS_LOADING:
       return {
