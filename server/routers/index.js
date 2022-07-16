@@ -16,6 +16,7 @@ router.get("/data-all", userAut, Controller.getAllData); //making
 router.get("/user/admins", Controller.listAdmins); //making
 router.get("/user/doctors", Controller.listDoctors); //get all list of doctors
 router.get("/user/admins", Controller.listAdmins); //get all list of doctors
+router.get("/count", Controller.Count); //get all list of doctors
 
 // //create VA
 // router.get("/getva/:id", userAut, Controller.getVa);

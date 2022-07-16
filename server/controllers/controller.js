@@ -2,16 +2,6 @@ const { User, Visitor, Data } = require("../models");
 const axios = require("axios");
 const jwt = require("jsonwebtoken");
 const { passHelper, jwtHelper } = require("../helper/helper");
-// const nodemailer = require("nodemailer");
-// const {
-//   weather,
-//   currency,
-//   xenditBalance,
-//   xenditCreateVa,
-//   xenditPayment,
-//   xenditGetVa,
-//   covidData,
-// } = require("../apis/weatherApi");
 
 class Controller {
   static async login(req, res, next) {
@@ -64,7 +54,8 @@ class Controller {
 
   static async registerNewVisit(req, res, next) {
     try {
-      const { timeVisit, doctor, patient, isFirst, createdAt, admin } = req.body;
+      const { timeVisit, doctor, patient, isFirst, createdAt, admin } =
+        req.body;
       let createData = await Data.create({
         timeVisit,
         doctorAssigned: +doctor,
@@ -214,11 +205,24 @@ class Controller {
   }
 
   //getalllistofDoctor
-  static async listAdmins(req, res, next) {
+  static async Count(req, res, next) {
     try {
-      let response = await User.findAll({
-        where: { role: "admin" },
-        attributes: ["id", "name", "email", "role"],
+      let response = await Data.findAll({
+        attributes: {
+          include: [
+            [
+              sequelize.fn("COUNT(DISTINCT(doctorFkId))"),
+              "doctorAssigned",
+            ],
+          ],
+        },
+        include: [
+          {
+            model: User,
+            as: "doctorFkId",
+            attributes: ["id", "name", "email"],
+          },
+        ],
       });
       res.status(200).json(response);
     } catch (err) {

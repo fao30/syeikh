@@ -11,6 +11,7 @@ import DataComponent from "../Components/data.component";
 import UserComponent from "../Components/user.component";
 import DoctorComponent from "../Components/doctor.component";
 import PatientComponent from "../Components/patient.component";
+import AnalyticComponent from "../Components/analytic.component";
 import AddDataComponent from "../Components/add-data.component";
 
 function ShowTabComponent({ tabActive }) {
@@ -45,7 +46,11 @@ function ShowTabComponent({ tabActive }) {
       </div>
     );
   } else {
-    return <h5>UNDER CONSTRUCTION</h5>;
+    return (
+      <div className="mt-3 center">
+        <AnalyticComponent />
+      </div>
+    );
   }
 }
 
