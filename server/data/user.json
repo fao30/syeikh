@@ -6,6 +6,12 @@
       "role": "director"
     },
     {
+      "name": "Adel",
+      "email": "a@gmail.com",
+      "password": "aaaaaa",
+      "role": "doctor"
+    },
+    {
       "name": "Oksana",
       "email": "o@gmail.com",
       "password": "oooooo",

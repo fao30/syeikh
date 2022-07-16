@@ -4,15 +4,16 @@ const { userAut, restrictedOnly } = require("../middleware/middleware");
 
 let router = express.Router();
 
-// router.get("/currency", Controller.currencyApi);
-// router.get("/all-user", Controller.allUser); //making
-router.post("/login", Controller.login); //making
-router.get("/all-visitor",userAut, Controller.allVisitor); //making
+router.get("/data-all", userAut, Controller.getAllData); //making
+router.post("/login", Controller.login); //login to the server
+router.get("/all-visitor",userAut, Controller.allVisitor); //get all visitor
 router.get("/all-user", Controller.allUser); //making
-router.post("/register-user",userAut, restrictedOnly, Controller.registerUser); //making
-router.post("/register-visitor",userAut, Controller.registerVisitor); //making
-router.get("/all-visit",userAut, Controller.allVisit); //making
-// router.patch("/detail/reduceseat", Controller.reduceSeat); //making
+router.post("/register-user",userAut, restrictedOnly, Controller.registerUser); //register tema
+router.post("/register-visitor",userAut, Controller.registerVisitor); //register patient
+router.get("/all-visit",userAut, Controller.allVisit); //get all visitor data
+router.get("/data/:id", Controller.dataById); //making
+router.get("/user/admins", Controller.listAdmins); //making
+router.get("/user/doctors", Controller.listDoctors); //get all list of doctors
 
 // //create VA
 // router.get("/getva/:id", userAut, Controller.getVa);
