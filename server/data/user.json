@@ -1,0 +1,27 @@
+[
+    {
+      "name": "Hussam",
+      "email": "h@gmail.com",
+      "password": "hhhhhh",
+      "role": "director"
+    },
+    {
+      "name": "Oksana",
+      "email": "o@gmail.com",
+      "password": "oooooo",
+      "role": "manager"
+    },
+    {
+      "name": "Regina",
+      "email": "r@gmail.com",
+      "password": "rrrrrr",
+      "role": "admin"
+    },
+    {
+      "name": "Dodo",
+      "email": "d@gmail.com",
+      "password": "dddddd",
+      "role": "admin"
+    }
+  ]
+  
