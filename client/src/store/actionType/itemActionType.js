@@ -2,6 +2,7 @@ export const ITEMS_LOADING = "items/loading";
 export const DATA_VISITOR = "dataVisitors/setDataVisitors";
 export const ALL_DOCTORS = "allDoctors/setAllDoctors";
 export const ALL_PATIENTS = "allPatients/setAllPatients";
+export const ALL_ADMINS = "allAdmins/setAllAdmins";
 export const ALL_USERS = "allUsers/setAllUsers";
 export const SET_GENRES = "genres/setGenres";
 export const ISLOGIN = "isLogin/setIsLogin";

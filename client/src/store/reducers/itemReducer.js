@@ -3,6 +3,7 @@ import {
   DATA_VISITOR,
   ALL_DOCTORS,
   ALL_PATIENTS,
+  ALL_ADMINS,
   ALL_USERS,
   ISLOGIN,
   DELETEMOVIE,
@@ -13,6 +14,7 @@ const initialState = {
   dataVisits: [],
   userLists: [],
   doctorLists: [],
+  adminLists: [],
   patientLists: [],
   singleData: {},
   isLoading: true,
@@ -22,6 +24,14 @@ const initialState = {
 
 export default function itemReducer(state = initialState, action) {
   switch (action.type) {
+    //INI DATA ADMINS
+    case ALL_ADMINS:
+      console.log(action);
+      return {
+        ...state,
+        isLoading: false,
+        adminLists: action.payload,
+      };
     //INI DATA USERS
     case ALL_USERS:
       console.log(action);

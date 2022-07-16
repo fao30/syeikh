@@ -4,6 +4,7 @@ import {
   ALL_DOCTORS,
   ALL_PATIENTS,
   ALL_USERS,
+  ALL_ADMINS,
   ISLOGIN,
   DELETEMOVIE,
   ADD_MOVIE,
@@ -50,6 +51,13 @@ function setAllPatients(payload) {
 function setAllUsers(payload) {
   return {
     type: ALL_USERS,
+    payload,
+  };
+}
+
+function setAllAdmins(payload) {
+  return {
+    type: ALL_ADMINS,
     payload,
   };
 }
@@ -177,16 +185,43 @@ export function fetchAllUsers() {
   };
 }
 
-export function addMovie(payload, payload2) {
+//GET ALL USERS
+export function fetchAllAdmins() {
   return function (dispatch, getState) {
-    // dispatch(categoriesLoading());
-    fetch(`${baseUrl}/data`, {
-      method: "POST",
+    dispatch(itemsLoading());
+    fetch(`${baseUrl}/user/admins`, {
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
         access_token: localStorage.access_token,
       },
-      body: payload,
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error(response.statusText);
+        return response.json();
+      })
+      .then((response1) => {
+        dispatch(setAllAdmins(response1));
+      })
+
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+}
+
+export function addNewVisit(payload) {
+  return function (dispatch, getState) {
+    // dispatch(categoriesLoading());
+    console.log(payload);
+    fetch(`${baseUrl}/register-new-visit`, {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        "Content-Type": "application/json",
+        access_token: localStorage.access_token,
+      },
+      body: JSON.stringify(payload),
     })
       .then((response) => {
         if (!response.ok) throw new Error(response.statusText);
@@ -194,11 +229,6 @@ export function addMovie(payload, payload2) {
       })
       .then((response1) => {
         dispatch(setAddMovie(response1));
-        swal(
-          "Movie Added!",
-          `movie named ${payload2.title} has been added`,
-          "success"
-        );
       })
       .catch((error) => {
         console.log(error, "INI ERRORRNYAAAA");
@@ -206,53 +236,3 @@ export function addMovie(payload, payload2) {
   };
 }
 
-export function removeMovie(payload) {
-  return function (dispatch, getState) {
-    // dispatch(categoriesLoading());
-    fetch(`${baseUrl}/data/${payload}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        access_token: localStorage.access_token,
-      },
-    })
-      .then((response) => {
-        if (!response.ok) throw new Error(response.statusText);
-        return response.json();
-      })
-      .then((response1) => {
-        console.log(response1, "INI HAPUSSS");
-        dispatch(setDeleteMovie(payload));
-        // swal(
-        //   "Movie Added!",
-        //   `movie with id ${payload} has been deleted`,
-        //   "success"
-        // );
-      })
-      .catch((error) => {
-        console.log(error, "INI ERRORRNYAAAA");
-      });
-  };
-}
-
-export function registerAccount(payload) {
-  return function (dispatch, getState) {
-    fetch(`${baseUrl}/register`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: payload,
-    })
-      .then((response) => {
-        if (!response.ok) throw new Error(response.statusText);
-        return response.json();
-      })
-      .then((response1) => {
-        console.log(response1, "INI JAWABAN");
-      })
-      .catch((error) => {
-        console.log(error, "INI ERRORRNYAAAA");
-      });
-  };
-}

@@ -62,6 +62,26 @@ class Controller {
     }
   }
 
+  static async registerNewVisit(req, res, next) {
+    try {
+      const { timeVisit, doctor, patient, isFirst, createdAt, admin } = req.body;
+      let createData = await Data.create({
+        timeVisit,
+        doctorAssigned: +doctor,
+        visitorAssigned: +patient,
+        admin: +admin,
+        createdBy: req.user.id,
+        isFirst,
+        createdAt,
+      });
+      if (createData) {
+        res.status(201).json(createData);
+      }
+    } catch (err) {
+      next(err);
+    }
+  }
+
   static async registerUser(req, res, next) {
     try {
       const { name, email, password, role } = req.body;
@@ -211,6 +231,19 @@ class Controller {
     try {
       let response = await User.findAll({
         where: { role: "doctor" },
+        attributes: ["id", "name", "email", "role"],
+      });
+      res.status(200).json(response);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  //getAllListOfDoctor
+  static async listAdmins(req, res, next) {
+    try {
+      let response = await User.findAll({
+        where: { role: "admin" },
         attributes: ["id", "name", "email", "role"],
       });
       res.status(200).json(response);
