@@ -56,15 +56,21 @@ class Controller {
 
   static async registerNewVisit(req, res, next) {
     try {
+      //cari apakah udah pernah visit
       const { timeVisit, doctor, patient, isFirst, createdAt, admin } =
         req.body;
+
+      let findVisitor = await Data.findOne({
+        where: { visitorAssigned: +patient },
+      });
+
       let createData = await Data.create({
         timeVisit,
         doctorAssigned: +doctor,
         visitorAssigned: +patient,
         admin: +admin,
         createdBy: req.user.id,
-        isFirst,
+        isFirst: findVisitor ? false : true,
         createdAt,
       });
       if (createData) {

@@ -9,6 +9,10 @@ import { useNavigate } from "react-router";
 import { fetchDataById } from "../store/actionCreator/itemAction";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import InputLabel from "@mui/material/InputLabel";
+import Input from "@mui/material/Input";
+import InputAdornment from "@mui/material/InputAdornment";
+import FormControl from "@mui/material/FormControl";
 
 export default function VisitDetail() {
   const [tabActive, setTabActive] = useState("allData");
@@ -23,9 +27,7 @@ export default function VisitDetail() {
   }, [params.id]);
 
   useEffect(() => {
-    console.log("EHEHEHEHE", dataVisitById);
     setDataById(dataVisitById);
-    console.log("AFERTRTTT", dataById);
   }, [dataVisitById]);
 
   function handleChange(e, value) {
@@ -73,6 +75,22 @@ export default function VisitDetail() {
           id="outlined-required"
           label="Doctor"
           value={dataById?.doctorFkId?.name || ""}
+        />
+        <FormControl sx={{ m: 1 }} variant="standard">
+          <InputLabel htmlFor="standard-adornment-amount">
+            Total Spend
+          </InputLabel>
+          <Input
+            id="standard-adornment-amount"
+            value={dataById?.totalSpend || ""}
+            onChange={(e) => {}}
+            startAdornment={<InputAdornment position="start">₽</InputAdornment>}
+          />
+        </FormControl>
+        <TextField
+          id="outlined-required"
+          label="Status"
+          value={dataById?.status || ""}
         />
       </div>
     </div>
