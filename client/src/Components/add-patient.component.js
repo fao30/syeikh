@@ -45,7 +45,7 @@ function AddPatient() {
     <>
       <Box sx={{ minWidth: 120 }} style={{ marginLeft: 50 }}>
         <h5>YOU CAN ADD NEW PATIENT</h5>
-        <div className="mt-4">
+        <div className="">
           <TextField
             id="outlined-basic"
             label="name"

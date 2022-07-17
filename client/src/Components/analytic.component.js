@@ -8,6 +8,7 @@ import {
   fetchAllAdmins,
 } from "../store/actionCreator/itemAction";
 import ChartDoctor from "./chart.component";
+import ChartAdmin from "./chart-admin.component";
 
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
@@ -47,7 +48,7 @@ function AnalyticComponent() {
       ) : (
         <>
           <h5>ADMIN ANALYTIC</h5>
-          {/* <ChartDoctor /> */}
+          <ChartAdmin />
         </>
       )}
     </>
