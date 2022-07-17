@@ -2,16 +2,8 @@ const { User, Visitor, Data } = require("../models");
 const axios = require("axios");
 const jwt = require("jsonwebtoken");
 const { passHelper, jwtHelper } = require("../helper/helper");
-// const nodemailer = require("nodemailer");
-// const {
-//   weather,
-//   currency,
-//   xenditBalance,
-//   xenditCreateVa,
-//   xenditPayment,
-//   xenditGetVa,
-//   covidData,
-// } = require("../apis/weatherApi");
+const Sequelize = require("sequelize");
+const { Op } = require("sequelize");
 
 class Controller {
   static async login(req, res, next) {
@@ -45,16 +37,15 @@ class Controller {
   static async registerVisitor(req, res, next) {
     try {
       const { name, phone } = req.body;
-      let createVisitor = await Visitor.create(
-        {
-          name,
-          phone
-        });
+      let createVisitor = await Visitor.create({
+        name,
+        phone,
+      });
       if (createVisitor) {
         res.status(201).json({
           id: createVisitor.id,
           name: createVisitor.name,
-          phone: createVisitor.phone
+          phone: createVisitor.phone,
         });
       }
       res.status(200).json(response);
@@ -63,16 +54,36 @@ class Controller {
     }
   }
 
+  static async registerNewVisit(req, res, next) {
+    try {
+      const { timeVisit, doctor, patient, isFirst, createdAt, admin } =
+        req.body;
+      let createData = await Data.create({
+        timeVisit,
+        doctorAssigned: +doctor,
+        visitorAssigned: +patient,
+        admin: +admin,
+        createdBy: req.user.id,
+        isFirst,
+        createdAt,
+      });
+      if (createData) {
+        res.status(201).json(createData);
+      }
+    } catch (err) {
+      next(err);
+    }
+  }
+
   static async registerUser(req, res, next) {
     try {
       const { name, email, password, role } = req.body;
-      let createUser = await User.create(
-        {
-          name,
-          email, 
-          password: passHelper.hashPassword(password),
-          role
-        });
+      let createUser = await User.create({
+        name,
+        email,
+        password: passHelper.hashPassword(password),
+        role,
+      });
       if (createUser) {
         res.status(201).json({
           id: createUser.id,
@@ -90,7 +101,7 @@ class Controller {
   static async allUser(req, res, next) {
     try {
       let response = await User.findAll({
-        attributes: ['id','name', 'email','role']
+        attributes: ["id", "name", "email", "role"],
       });
       res.status(200).json(response);
     } catch (err) {
@@ -101,14 +112,14 @@ class Controller {
   static async allVisit(req, res, next) {
     try {
       let response = await Data.findAll({
-        include: [
-          {
-            model: User,
-          },
-          {
-            model: Visitor,
-          },
-        ]
+        // include: [
+        //   {
+        //     model: User,
+        //   },
+        //   {
+        //     model: Visitor,
+        //   },
+        // ],
       });
       res.status(200).json(response);
     } catch (err) {
@@ -118,7 +129,140 @@ class Controller {
 
   static async allVisitor(req, res, next) {
     try {
-      let response = await Visitor.findAll();
+      let where = {};
+      if (req.query.name) {
+        where.name = {};
+        where.name[Op.startsWith] = req.query.name;
+      }
+      let response = await Visitor.findAll({ where });
+      res.status(200).json(response);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  //Get data visit by ID
+  static async dataById(req, res, next) {
+    try {
+      const { id } = req.params;
+      let response = await Data.findOne({
+        where: { id: +id },
+        include: [
+          {
+            model: User,
+            as: "adminFkId",
+            attributes: ["name", "email"],
+          },
+          {
+            model: User,
+            as: "doctorFkId",
+            attributes: ["id", "name", "email"],
+          },
+          {
+            model: User,
+            as: "creatorFkId",
+            attributes: ["id", "name", "email"],
+          },
+          {
+            model: User,
+            as: "updatorFkId",
+            attributes: ["id", "name", "email"],
+          },
+          { model: Visitor, attributes: ["id", "name", "phone"] },
+        ],
+      });
+      res.status(200).json(response);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  //Get all data visit
+  static async getAllData(req, res, next) {
+    try {
+      let response = await Data.findAll({
+        order: [["createdAt", "DESC"]],
+        include: [
+          {
+            model: User,
+            as: "adminFkId",
+            attributes: ["name", "email"],
+          },
+          {
+            model: User,
+            as: "doctorFkId",
+            attributes: ["id", "name", "email"],
+          },
+          {
+            model: User,
+            as: "creatorFkId",
+            attributes: ["id", "name", "email"],
+          },
+          {
+            model: User,
+            as: "updatorFkId",
+            attributes: ["id", "name", "email"],
+          },
+          { model: Visitor, attributes: ["id", "name", "phone"] },
+        ],
+      });
+      res.status(200).json(response);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  //getalllistofDoctor
+  static async Count(req, res, next) {
+    try {
+      let response = await Data.findAll({
+        attributes: [
+          "doctorAssigned",
+          [Sequelize.literal(`COUNT(*)`), "count"],
+        ],
+        group: ["doctorAssigned"],
+        order: [["doctorAssigned", "ASC"]],
+      });
+      res.status(200).json(response);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  //COUNT ADMIN
+  static async CountAdmin(req, res, next) {
+    try {
+      let response = await Data.findAll({
+        attributes: ["admin", [Sequelize.literal(`COUNT(*)`), "count"]],
+        group: ["admin"],
+        order: [["admin", "ASC"]],
+      });
+      res.status(200).json(response);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  //getAllListOfDoctor
+  static async listDoctors(req, res, next) {
+    try {
+      let response = await User.findAll({
+        where: { role: ["doctor", "director"] },
+        attributes: ["id", "name", "email", "role"],
+      });
+      res.status(200).json(response);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  //getAllListOfDoctor
+  static async listAdmins(req, res, next) {
+    try {
+      let response = await User.findAll({
+        where: { role: "admin" },
+        attributes: ["id", "name", "email", "role"],
+      });
       res.status(200).json(response);
     } catch (err) {
       next(err);

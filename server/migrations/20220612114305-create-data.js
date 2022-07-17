@@ -11,8 +11,16 @@ module.exports = {
       timeVisit: {
         type: Sequelize.DATE
       },
-      doctorAssigned: {
-        type: Sequelize.STRING
+      doctorAssigned:  {
+        type: Sequelize.INTEGER,
+        references: {
+          model: {
+            tableName: "Users",
+          },
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       visitorAssigned:  {
         type: Sequelize.INTEGER,
@@ -37,10 +45,26 @@ module.exports = {
         onDelete: "CASCADE",
       },
       createdBy: {
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER,
+        references: {
+          model: {
+            tableName: "Users",
+          },
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       updateBy: {
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER,
+        references: {
+          model: {
+            tableName: "Users",
+          },
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       isFirst: {
         type: Sequelize.BOOLEAN
