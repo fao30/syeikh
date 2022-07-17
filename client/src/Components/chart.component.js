@@ -18,62 +18,38 @@ const ChartDiagram = () => {
   }, []);
 
   useEffect(() => {
-    console.log("EJEJEJEJE");
-    setDataChart(doctorLists);
-    
+    const chartList = [];
+    doctorLists.forEach((e, i) => {
+      chartList.push({
+        label: e.name,
+        data: [
+          65 + i * 10,
+          59 + i * 10,
+          80 + i * 10,
+          81 + i * 10,
+          56 + i * 10,
+          55 + i * 10,
+          40 + i * 10,
+        ],
+        borderColor: [
+          "rgb(255, 99, 132)",
+          "rgb(255, 159, 64)",
+          "rgb(255, 205, 86)",
+          "rgb(75, 192, 192)",
+          "rgb(54, 162, 235)",
+          "rgb(153, 102, 255)",
+          "rgb(201, 203, 207)",
+        ],
+        borderWidth: 2,
+      });
+    });
+    setDataChart(chartList);
   }, [doctorLists]);
 
-  const labels = ["0", "1", "3", "4", "5", "6", "7"];
+  const labels = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul"];
   const data = {
     labels: labels,
-    datasets: [
-      {
-        label: "My First Dataset",
-        data: [65, 59, 80, 81, 56, 55, 40],
-        backgroundColor: [
-          "rgba(255, 99, 132, 0.2)",
-          "rgba(255, 159, 64, 0.2)",
-          "rgba(255, 205, 86, 0.2)",
-          "rgba(75, 192, 192, 0.2)",
-          "rgba(54, 162, 235, 0.2)",
-          "rgba(153, 102, 255, 0.2)",
-          "rgba(201, 203, 207, 0.2)",
-        ],
-        borderColor: [
-          "rgb(255, 99, 132)",
-          "rgb(255, 159, 64)",
-          "rgb(255, 205, 86)",
-          "rgb(75, 192, 192)",
-          "rgb(54, 162, 235)",
-          "rgb(153, 102, 255)",
-          "rgb(201, 203, 207)",
-        ],
-        borderWidth: 1,
-      },
-      {
-        label: "My Second Dataset",
-        data: [33, 12, 23, 43, 12, 21, 12],
-        backgroundColor: [
-          "rgba(255, 99, 132, 0.2)",
-          "rgba(255, 159, 64, 0.2)",
-          "rgba(255, 205, 86, 0.2)",
-          "rgba(75, 192, 192, 0.2)",
-          "rgba(54, 162, 235, 0.2)",
-          "rgba(153, 102, 255, 0.2)",
-          "rgba(201, 203, 207, 0.2)",
-        ],
-        borderColor: [
-          "rgb(255, 99, 132)",
-          "rgb(255, 159, 64)",
-          "rgb(255, 205, 86)",
-          "rgb(75, 192, 192)",
-          "rgb(54, 162, 235)",
-          "rgb(153, 102, 255)",
-          "rgb(201, 203, 207)",
-        ],
-        borderWidth: 1,
-      },
-    ],
+    datasets: dataChart,
   };
 
   return (

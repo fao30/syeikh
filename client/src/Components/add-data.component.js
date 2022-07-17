@@ -20,7 +20,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
-function AddDataComponent() {
+function AddDataComponent({ setTabActive }) {
   const dispatch = useDispatch();
   const { doctorLists, patientLists, adminLists } = useSelector(
     (state) => state.clinic
@@ -58,6 +58,7 @@ function AddDataComponent() {
     const createdAt = new Date();
     setSelectValue({ ...selectValue, createdAt });
     dispatch(addNewVisit(selectValue));
+    setTabActive("allData");
   };
 
   return (

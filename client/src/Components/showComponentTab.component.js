@@ -14,7 +14,7 @@ import PatientComponent from "../Components/patient.component";
 import AnalyticComponent from "../Components/analytic.component";
 import AddDataComponent from "../Components/add-data.component";
 
-function ShowTabComponent({ tabActive }) {
+function ShowTabComponent({ tabActive, setTabActive }) {
   if (tabActive === "allData") {
     return (
       <div className="mt-3 center">
@@ -24,7 +24,7 @@ function ShowTabComponent({ tabActive }) {
   } else if (tabActive === "addVisit") {
     return (
       <div className="mt-3 center">
-        <AddDataComponent />
+        <AddDataComponent setTabActive={setTabActive} />
       </div>
     );
   } else if (tabActive === "allUsers") {

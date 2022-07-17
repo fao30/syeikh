@@ -62,13 +62,6 @@ function setAllAdmins(payload) {
   };
 }
 
-function setDeleteMovie(payload) {
-  return {
-    type: DELETEMOVIE,
-    payload,
-  };
-}
-
 function itemsLoading(payload) {
   return {
     type: ITEMS_LOADING,
@@ -97,7 +90,7 @@ export function fetchData() {
           const visitorName = e.Visitor.name;
           const adminName = e.adminFkId.name;
           const doctorName = e.doctorFkId.name;
-          responseModified.push({ ...e, visitorName, adminName, doctorName});
+          responseModified.push({ ...e, visitorName, adminName, doctorName });
         });
         dispatch(setDataVisitor(responseModified));
       })
@@ -149,7 +142,6 @@ export function fetchAllPatients() {
         return response.json();
       })
       .then((response1) => {
-        console.log(response1);
         dispatch(setAllPatients(response1));
       })
 
@@ -217,7 +209,7 @@ export function addNewVisit(payload) {
     fetch(`${baseUrl}/register-new-visit`, {
       method: "POST",
       headers: {
-        'Accept': 'application/json',
+        Accept: "application/json",
         "Content-Type": "application/json",
         access_token: localStorage.access_token,
       },
@@ -236,3 +228,30 @@ export function addNewVisit(payload) {
   };
 }
 
+export function addNewPatient(payload, payload1) {
+  return function (dispatch, getState) {
+    // dispatch(categoriesLoading());
+    console.log(payload);
+    fetch(`${baseUrl}/register-visitor`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        access_token: localStorage.access_token,
+      },
+      body: JSON.stringify(payload),
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error(response.statusText);
+        return response.json();
+      })
+      .then((response1) => {
+        console.log(payload1);
+        console.log(response1);
+        dispatch(setAllPatients([...payload1, response1]));
+      })
+      .catch((error) => {
+        console.log(error, "INI ERRORRNYAAAA");
+      });
+  };
+}

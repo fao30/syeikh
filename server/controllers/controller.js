@@ -174,6 +174,7 @@ class Controller {
   static async getAllData(req, res, next) {
     try {
       let response = await Data.findAll({
+        order: [["createdAt", "DESC"]],
         include: [
           {
             model: User,
@@ -208,19 +209,12 @@ class Controller {
   static async Count(req, res, next) {
     try {
       let response = await Data.findAll({
-        attributes: {
-          include: [
-            [
-              sequelize.fn("COUNT(DISTINCT(doctorFkId))"),
-              "doctorAssigned",
-            ],
-          ],
-        },
         include: [
           {
             model: User,
             as: "doctorFkId",
             attributes: ["id", "name", "email"],
+            group: "doctorAssigned",
           },
         ],
       });

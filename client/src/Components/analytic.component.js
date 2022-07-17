@@ -7,19 +7,49 @@ import {
   addNewVisit,
   fetchAllAdmins,
 } from "../store/actionCreator/itemAction";
-import Chart from "./chart.component";
+import ChartDoctor from "./chart.component";
+
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
 
 function AnalyticComponent() {
   const dispatch = useDispatch();
   const { doctorLists, patientLists, adminLists } = useSelector(
     (state) => state.clinic
   );
-  const [selectValue, setSelectValue] = useState({});
+  const [radioButton, setRadioButton] = useState("doctor");
 
   return (
     <>
-      <h5>ANALYTICS</h5>
-      <Chart />
+      <FormControl>
+        <FormLabel id="demo-row-radio-buttons-group-label">ANALYTIC</FormLabel>
+        <RadioGroup
+          row
+          aria-labelledby="demo-row-radio-buttons-group-label"
+          name="row-radio-buttons-group"
+          onChange={(e) => {
+            setRadioButton(e.target.value);
+          }}
+          value={radioButton}
+        >
+          <FormControlLabel value="doctor" control={<Radio />} label="Doctor" />
+          <FormControlLabel value="admin" control={<Radio />} label="Admin" />
+        </RadioGroup>
+      </FormControl>
+      {radioButton === "doctor" ? (
+        <>
+          <h5>DOCTER ANALYTIC</h5>
+          <ChartDoctor />
+        </>
+      ) : (
+        <>
+          <h5>ADMIN ANALYTIC</h5>
+          {/* <ChartDoctor /> */}
+        </>
+      )}
     </>
   );
 }
