@@ -42,13 +42,17 @@ function AnalyticComponent() {
       </FormControl>
       {radioButton === "doctor" ? (
         <>
-          <h5>DOCTER ANALYTIC</h5>
-          <ChartDoctor />
+          <center>
+            <h5>DOCTER ANALYTIC</h5>
+            <ChartDoctor />
+          </center>
         </>
       ) : (
         <>
-          <h5>ADMIN ANALYTIC</h5>
-          <ChartAdmin />
+          <center>
+            <h5>ADMIN ANALYTIC</h5>
+            <ChartAdmin />
+          </center>
         </>
       )}
     </>

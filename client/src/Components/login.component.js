@@ -29,7 +29,6 @@ function LoginComponent() {
       }),
     })
       .then((response) => {
-        console.log(response);
         if (!response.ok) {
           throw new Error(response.statusText);
         }
@@ -44,7 +43,6 @@ function LoginComponent() {
       })
       .catch((error) => {
         swal(`${error.message}`, "Email or Password is Incorrect!", "error");
-        // console.log(error, "INI ERRORRNYAAAA");
       });
   };
   return (

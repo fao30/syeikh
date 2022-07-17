@@ -8,17 +8,21 @@ import { useNavigate } from "react-router";
 import { Button } from "@mui/material";
 import { fetchAllPatients } from "../store/actionCreator/itemAction";
 import AddPatient from "./add-patient.component";
+import TextField from "@mui/material/TextField";
+import SearchComponent from "./search.component";
 
 function PatientComponent() {
   const dispatch = useDispatch();
   const { patientLists } = useSelector((state) => state.clinic);
   const [addForm, setAddForm] = useState(false);
+  const [searchButton, setSearchButton] = useState(false);
 
   const addNewData = (e) => {
-    // const createdAt = new Date();
-    // setSelectValue({ ...selectValue, createdAt });
-    // dispatch(addNewVisit(selectValue));
-    setAddForm(addForm ? false : true);
+    if (e.target.textContent === "SEARCH BUTTON") {
+      setSearchButton(searchButton ? false : true);
+    } else {
+      setAddForm(addForm ? false : true);
+    }
   };
 
   useEffect(() => {
@@ -34,6 +38,15 @@ function PatientComponent() {
 
   return (
     <>
+      <div className="mt-4">
+        <Button label="search" onClick={addNewData} variant="outlined">
+          SEARCH BUTTON
+        </Button>
+      </div>
+      <div className="mt-4 mb-4">
+        {searchButton ? <SearchComponent tabName="patient" /> : <></>}
+      </div>
+
       <div style={{ marginLeft: 350, height: 400, width: "50%" }}>
         <DataGrid
           rows={patientLists}
@@ -42,7 +55,6 @@ function PatientComponent() {
           rowsPerPageOptions={[5]}
           onCellClick={(params, event) => {
             event.defaultMuiPrevented = true;
-            console.log(params);
           }}
         />
       </div>

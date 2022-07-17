@@ -1,10 +1,9 @@
 import { Routes, Route } from "react-router-dom";
 import RequireAuth from "./Components/requireAuth";
 
-
 import Login from "./pages/Login";
 import Home from "./pages/Home";
-
+import VisitDetail from "./pages/VisitDetail";
 
 function App() {
   return (
@@ -16,6 +15,15 @@ function App() {
             <RequireAuth>
               {" "}
               <Home />{" "}
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/visit/:id"
+          element={
+            <RequireAuth>
+              {" "}
+              <VisitDetail />{" "}
             </RequireAuth>
           }
         />

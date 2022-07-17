@@ -1,12 +1,15 @@
 import {
   ITEMS_LOADING,
   DATA_VISITOR,
+  DATA_VISITOR_BY_ID,
   ALL_DOCTORS,
   ALL_PATIENTS,
   ALL_USERS,
   ALL_ADMINS,
   ISLOGIN,
   DELETEMOVIE,
+  ALL_ADMINS_COUNT,
+  ALL_DOCTORS_COUNT,
   ADD_MOVIE,
 } from "../actionType/itemActionType";
 import swal from "sweetalert";
@@ -34,9 +37,30 @@ function setDataVisitor(payload) {
   };
 }
 
+function setDataById(payload) {
+  return {
+    type: DATA_VISITOR_BY_ID,
+    payload,
+  };
+}
+
 function setAllDoctors(payload) {
   return {
     type: ALL_DOCTORS,
+    payload,
+  };
+}
+
+function setAllDoctorsCount(payload) {
+  return {
+    type: ALL_DOCTORS_COUNT,
+    payload,
+  };
+}
+
+function setAllAdminCount(payload) {
+  return {
+    type: ALL_ADMINS_COUNT,
     payload,
   };
 }
@@ -101,6 +125,63 @@ export function fetchData() {
   };
 }
 
+//GET ALL OF DATA
+export function fetchDataById(params) {
+  return function (dispatch, getState) {
+    dispatch(itemsLoading());
+    fetch(`${baseUrl}/data/${params}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        access_token: localStorage.access_token,
+      },
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error(response.statusText);
+        return response.json();
+      })
+      .then((response1) => {
+        dispatch(setDataById(response1));
+      })
+
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+}
+
+//GET ALL OF DATA
+export function fetchDataWithParams(params) {
+  return function (dispatch, getState) {
+    dispatch(itemsLoading());
+    fetch(`${baseUrl}/data-all`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        access_token: localStorage.access_token,
+      },
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error(response.statusText);
+        return response.json();
+      })
+      .then((response1) => {
+        let responseModified = [];
+        response1.forEach((e) => {
+          const visitorName = e.Visitor.name;
+          const adminName = e.adminFkId.name;
+          const doctorName = e.doctorFkId.name;
+          responseModified.push({ ...e, visitorName, adminName, doctorName });
+        });
+        dispatch(setDataVisitor(responseModified));
+      })
+
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+}
+
 //GET ALL DOCOT
 export function fetchAllDoctor() {
   return function (dispatch, getState) {
@@ -126,11 +207,88 @@ export function fetchAllDoctor() {
   };
 }
 
+//GET ALL COUNT DOCTOR
+export function fetchAllDoctorCount() {
+  return function (dispatch, getState) {
+    dispatch(itemsLoading());
+    fetch(`${baseUrl}/count-doctor`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        access_token: localStorage.access_token,
+      },
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error(response.statusText);
+        return response.json();
+      })
+      .then((response1) => {
+        dispatch(setAllDoctorsCount(response1));
+      })
+
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+}
+
+//GET ALL COUNT ADMINS
+export function fetchAllAdminCount() {
+  return function (dispatch, getState) {
+    dispatch(itemsLoading());
+    fetch(`${baseUrl}/count-admin`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        access_token: localStorage.access_token,
+      },
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error(response.statusText);
+        return response.json();
+      })
+      .then((response1) => {
+        dispatch(setAllAdminCount(response1));
+      })
+
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+}
+
 //GET ALL PATIENTS
 export function fetchAllPatients() {
   return function (dispatch, getState) {
     dispatch(itemsLoading());
     fetch(`${baseUrl}/all-visitor`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        access_token: localStorage.access_token,
+      },
+      // body: JSON.stringify({ payload }),
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error(response.statusText);
+        return response.json();
+      })
+      .then((response1) => {
+        dispatch(setAllPatients(response1));
+      })
+
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+}
+
+//GET ALL PATIENTS BY NAME
+export function fetchAllPatientsByName(payload) {
+  console.log(payload);
+  return function (dispatch, getState) {
+    dispatch(itemsLoading());
+    fetch(`${baseUrl}/all-visitor?name=${payload}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

@@ -37,7 +37,6 @@ function DoctorComponent() {
           rowsPerPageOptions={[5]}
           onCellClick={(params, event) => {
             event.defaultMuiPrevented = true;
-            console.log(params);
           }}
         />
       </div>

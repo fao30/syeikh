@@ -2,6 +2,8 @@ const { User, Visitor, Data } = require("../models");
 const axios = require("axios");
 const jwt = require("jsonwebtoken");
 const { passHelper, jwtHelper } = require("../helper/helper");
+const Sequelize = require("sequelize");
+const { Op } = require("sequelize");
 
 class Controller {
   static async login(req, res, next) {
@@ -127,7 +129,12 @@ class Controller {
 
   static async allVisitor(req, res, next) {
     try {
-      let response = await Visitor.findAll();
+      let where = {};
+      if (req.query.name) {
+        where.name = {};
+        where.name[Op.startsWith] = req.query.name;
+      }
+      let response = await Visitor.findAll({ where });
       res.status(200).json(response);
     } catch (err) {
       next(err);
@@ -209,14 +216,26 @@ class Controller {
   static async Count(req, res, next) {
     try {
       let response = await Data.findAll({
-        include: [
-          {
-            model: User,
-            as: "doctorFkId",
-            attributes: ["id", "name", "email"],
-            group: "doctorAssigned",
-          },
+        attributes: [
+          "doctorAssigned",
+          [Sequelize.literal(`COUNT(*)`), "count"],
         ],
+        group: ["doctorAssigned"],
+        order: [["doctorAssigned", "ASC"]],
+      });
+      res.status(200).json(response);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  //COUNT ADMIN
+  static async CountAdmin(req, res, next) {
+    try {
+      let response = await Data.findAll({
+        attributes: ["admin", [Sequelize.literal(`COUNT(*)`), "count"]],
+        group: ["admin"],
+        order: [["admin", "ASC"]],
       });
       res.status(200).json(response);
     } catch (err) {
@@ -228,7 +247,7 @@ class Controller {
   static async listDoctors(req, res, next) {
     try {
       let response = await User.findAll({
-        where: { role: "doctor" },
+        where: { role: ["doctor", "director"] },
         attributes: ["id", "name", "email", "role"],
       });
       res.status(200).json(response);

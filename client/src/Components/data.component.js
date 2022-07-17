@@ -6,14 +6,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { baseUrl } from "../store/helper/url";
 import { useNavigate } from "react-router";
 import { fetchData } from "../store/actionCreator/itemAction";
+import { Button } from "@mui/material";
+import SearchComponent from "./search.component";
 
 function DataComponent() {
   const dispatch = useDispatch();
   const { dataVisits } = useSelector((state) => state.clinic);
+  const Navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchData());
-  },[]);
+  }, []);
 
   const columns = [
     { field: "id", headerName: "ID", width: 70 },
@@ -45,13 +48,13 @@ function DataComponent() {
     },
     {
       field: "isFirst",
-      headerName: "is First",
+      headerName: "First Timer",
       // type: "number",
       width: 130,
     },
     {
       field: "totalSpend",
-      headerName: "totalSpend",
+      headerName: "Total Spent",
       type: "number",
       width: 130,
     },
@@ -76,15 +79,15 @@ function DataComponent() {
 
   return (
     <>
-      <div style={{ marginLeft:50, height: 400, width: "100%" }}>
+      <div style={{ marginLeft: 50, height: 400, width: "100%" }}>
         <DataGrid
           rows={dataVisits}
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5]}
-          onCellClick={(params, event) => {
+          onRowClick={(params, event) => {
             event.defaultMuiPrevented = true;
-            console.log(params);
+            Navigate(`/visit/${params.id}`);
           }}
         />
       </div>

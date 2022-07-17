@@ -24,5 +24,3 @@ export const tabOptions = [
     label: "All Doctors",
   },
 ];
-
-

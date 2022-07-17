@@ -1,71 +1,57 @@
 import React, { useEffect, useState } from "react";
-import { Line } from "react-chartjs-2";
+import { Line, Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
 import { Chart } from "react-chartjs-2";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllAdmins } from "../store/actionCreator/itemAction";
+import {
+  fetchAllAdmins,
+  fetchAllAdminCount,
+} from "../store/actionCreator/itemAction";
 
 const ChartAdminDiagram = () => {
   const dispatch = useDispatch();
-  const [dataChart, setDataChart] = useState([]);
+  const [adminNames, setAdminNames] = useState([]);
+  const [adminCount, setAdminCount] = useState([]);
+  const [backgroundColor, setBackgroundColor] = useState([]);
 
-  const { doctorLists, patientLists, adminLists } = useSelector(
-    (state) => state.clinic
-  );
+  const { adminLists, adminCounts } = useSelector((state) => state.clinic);
 
   useEffect(() => {
     dispatch(fetchAllAdmins());
+    dispatch(fetchAllAdminCount());
   }, []);
 
   useEffect(() => {
-    const chartList = [];
-    adminLists.forEach((e, i) => {
-      chartList.push({
-        label: e.name,
-        data: [
-          10 + i * 10,
-          30 + i * 10,
-          89 + i * 10,
-          43 + i * 10,
-          78 + i * 10,
-          43 + i * 10,
-          40 + i * 10,
-        ],
-        borderColor: [
-          "rgb(255, 99, 132)",
-          "rgb(255, 159, 64)",
-          "rgb(255, 205, 86)",
-          "rgb(75, 192, 192)",
-          "rgb(54, 162, 235)",
-          "rgb(153, 102, 255)",
-          "rgb(201, 203, 207)",
-        ],
-        borderWidth: 2,
-      });
+    let color = [];
+    const nameAdmins = adminLists.map((e, i) => {
+      return e.name;
     });
-    setDataChart(chartList);
-  }, [adminLists]);
+    const adminChart = adminCounts.map((e, i) => {
+      const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+      color.push(`#${randomColor}`);
+      return +e.count;
+    });
+    setAdminNames(nameAdmins);
+    setAdminCount(adminChart);
+    setBackgroundColor(color);
+  }, [adminLists, adminCounts]);
 
-  const labels = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul"];
   const data = {
-    labels: labels,
-    datasets: dataChart,
+    labels: adminNames,
+    datasets: [
+      {
+        label: "Admin Chart",
+        data: adminCount,
+        backgroundColor: backgroundColor,
+        hoverOffset: 4,
+      },
+    ],
   };
 
   return (
-    <Line
-      type="bar"
-      width={160}
-      height={60}
-      options={{
-        scales: {
-          y: {
-            beginAtZero: true,
-          },
-        },
-      }}
-      data={data}
-    />
+    <div style={{ width: 500, height: 500 }}>
+      <Doughnut type="doughnut" data={data} />
+    </div>
   );
 };
 export default ChartAdminDiagram;
