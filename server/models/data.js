@@ -15,6 +15,8 @@ module.exports = (sequelize, DataTypes) => {
       Data.belongsTo(models.User, { as: "doctorFkId", foreignKey: "doctorAssigned" });
       Data.belongsTo(models.User, {  as: "creatorFkId", foreignKey: "createdBy" });
       Data.belongsTo(models.User, { as: "updatorFkId", foreignKey: "updateBy" });
+      Data.belongsTo(models.User, { as: "doctorReferenceFkId", foreignKey: "doctorReference" });
+      Data.belongsTo(models.Data, { as: "visitReferenceFkId", foreignKey: "visitReference" });
       Data.belongsTo(models.Visitor, { foreignKey: "visitorAssigned" });
     }
   };
@@ -25,6 +27,22 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
       references: {
         model: "Users",
+        key: "id",
+      },
+    },
+    doctorReference: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: "Users",
+        key: "id",
+      },
+    },
+    visitReference: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: "Data",
         key: "id",
       },
     },

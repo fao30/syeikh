@@ -16,6 +16,7 @@ import InputLabel from "@mui/material/InputLabel";
 import Input from "@mui/material/Input";
 import InputAdornment from "@mui/material/InputAdornment";
 import FormControl from "@mui/material/FormControl";
+import BasicCard from "../Components/card.component";
 
 export default function VisitDetail() {
   const [tabActive, setTabActive] = useState("allData");
@@ -31,6 +32,7 @@ export default function VisitDetail() {
   }, [params.id]);
 
   useEffect(() => {
+    // console.log(dataVisitById);
     setDataById(dataVisitById);
   }, [dataVisitById]);
 
@@ -155,6 +157,13 @@ export default function VisitDetail() {
       >
         Update Data
       </Button>
+      {dataVisitById.visitReferenceFkId ? (
+        <div>
+          <BasicCard data={dataById} />
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }

@@ -41,6 +41,8 @@ function AddDataComponent({ setTabActive }) {
   }, []);
 
   function handleChange(event, params) {
+    console.log(event.target.value);
+    console.log(params.props.label);
     if (params.props.label === "doctor") {
       const doctor = event.target.value;
       setSelectValue({ ...selectValue, doctor });
@@ -50,6 +52,9 @@ function AddDataComponent({ setTabActive }) {
     } else if (params.props.label === "admin") {
       const admin = event.target.value;
       setSelectValue({ ...selectValue, admin });
+    } else if (params.props.label === "doctorReference") {
+      const doctorReference = event.target.value;
+      setSelectValue({ ...selectValue, doctorReference });
     }
   }
 
@@ -76,6 +81,26 @@ function AddDataComponent({ setTabActive }) {
             {doctorLists.map((e) => {
               return (
                 <MenuItem label="doctor" value={e.id}>
+                  {e.name}
+                </MenuItem>
+              );
+            })}
+          </Select>
+        </FormControl>
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">
+            Doctor Reference
+          </InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={selectValue.doctorReference}
+            label="doctorReference"
+            onChange={handleChange}
+          >
+            {doctorLists.map((e) => {
+              return (
+                <MenuItem label="doctorReference" value={e.id}>
                   {e.name}
                 </MenuItem>
               );

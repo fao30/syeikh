@@ -22,6 +22,8 @@ function DataComponent() {
     { field: "id", headerName: "ID", width: 70 },
     { field: "timeVisit", headerName: "Time Visit", width: 150 },
     { field: "doctorName", headerName: "Doctor Name", width: 130 },
+    { field: "doctorReferenceName", headerName: "Doctor Reference", width: 130 },
+    { field: "visitReferenceId", headerName: "Visit Reference", width: 130 },
     {
       field: "visitorName",
       headerName: "visitor Name",

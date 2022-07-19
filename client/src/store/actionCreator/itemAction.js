@@ -145,6 +145,7 @@ export function fetchData() {
           const visitorName = e.Visitor.name;
           const adminName = e.adminFkId.name;
           const doctorName = e.doctorFkId.name;
+          const doctorReferenceName = e?.doctorReferenceFkId?.name || "";
           responseModified.push({
             ...e,
             timeVisit,
@@ -155,8 +156,10 @@ export function fetchData() {
             doctorName,
             creatorName,
             updatorName,
+            doctorReferenceName,
           });
         });
+        console.log(responseModified);
         dispatch(setDataVisitor(responseModified));
       })
 

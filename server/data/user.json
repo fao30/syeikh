@@ -12,6 +12,18 @@
       "role": "doctor"
     },
     {
+      "name": "Hadad",
+      "email": "ha@gmail.com",
+      "password": "hhhhhh",
+      "role": "doctor"
+    },
+    {
+      "name": "Kamal",
+      "email": "k@gmail.com",
+      "password": "kkkkkk",
+      "role": "doctor"
+    },
+    {
       "name": "Oksana",
       "email": "o@gmail.com",
       "password": "oooooo",
@@ -21,6 +33,12 @@
       "name": "Regina",
       "email": "r@gmail.com",
       "password": "rrrrrr",
+      "role": "admin"
+    },
+    {
+      "name": "Olesya",
+      "email": "ol@gmail.com",
+      "password": "oooooo",
       "role": "admin"
     },
     {
