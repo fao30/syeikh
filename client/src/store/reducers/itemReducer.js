@@ -7,9 +7,10 @@ import {
   ALL_USERS,
   ISLOGIN,
   DELETEMOVIE,
-  ADD_MOVIE,
+  ADD_MOVIE,ALL_PATIENT_COUNT,
   ALL_DOCTORS_COUNT,
-  ALL_ADMINS_COUNT
+  ALL_ADMINS_COUNT,
+  ALL_PATIENT_FIRST
 } from "../actionType/itemActionType";
 
 const initialState = {
@@ -20,8 +21,10 @@ const initialState = {
   adminLists: [],
   doctorCounts: [],
   adminCounts: [],
+  patientCounts: [],
   patientLists: [],
   singleData: {},
+  patientFirst: {},
   isLoading: true,
   isLogin: false,
   error: null,
@@ -35,6 +38,20 @@ export default function itemReducer(state = initialState, action) {
         ...state,
         isLoading: false,
         dataVisitById: action.payload,
+      };
+    //INI PATIENT COUNT
+    case ALL_PATIENT_FIRST:
+      return {
+        ...state,
+        isLoading: false,
+        patientFirst: action.payload,
+      };
+    //INI PATIENT COUNT
+    case ALL_PATIENT_COUNT:
+      return {
+        ...state,
+        isLoading: false,
+        patientCounts: action.payload,
       };
     //INI ADMIN COUNT
     case ALL_ADMINS_COUNT:

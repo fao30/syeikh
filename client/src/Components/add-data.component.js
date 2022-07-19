@@ -57,14 +57,13 @@ function AddDataComponent({ setTabActive }) {
     e.preventDefault();
     const createdAt = new Date();
     setSelectValue({ ...selectValue, createdAt });
-    dispatch(addNewVisit(selectValue));
-    setTabActive("allData");
+    dispatch(addNewVisit(selectValue, setTabActive));
   };
 
   return (
     <>
       <h5>PLEASE ADD NEW VISIT</h5>
-      <Box sx={{ minWidth: 120 }} style={{ marginLeft: 50 }}>
+      <Box sx={{ minWidth: 120 }} style={{ marginLeft: 50, width: 1350 }}>
         <FormControl fullWidth>
           <InputLabel id="demo-simple-select-label">Doctor</InputLabel>
           <Select

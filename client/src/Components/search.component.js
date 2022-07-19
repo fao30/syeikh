@@ -15,6 +15,7 @@ import MuiPhoneNumber from "material-ui-phone-number";
 
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
+import { useDebounce } from "../store/helper/useDebounce";
 
 function SearchComponent({ tabName }) {
   const dispatch = useDispatch();
@@ -23,24 +24,6 @@ function SearchComponent({ tabName }) {
   const { doctorLists, patientLists, adminLists } = useSelector(
     (state) => state.clinic
   );
-
-  function useDebounce(value, delay) {
-    // State and setters for debounced value
-    const [debouncedValue, setDebouncedValue] = useState(value);
-    useEffect(
-      () => {
-        const handler = setTimeout(() => {
-          setDebouncedValue(value);
-        }, delay);
-
-        return () => {
-          clearTimeout(handler);
-        };
-      },
-      [value, delay] // Only re-call effect if value or delay changes
-    );
-    return debouncedValue;
-  }
 
   const debouncedSearchName = useDebounce(searchName, 700);
 

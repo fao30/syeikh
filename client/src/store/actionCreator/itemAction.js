@@ -8,6 +8,8 @@ import {
   ALL_ADMINS,
   ISLOGIN,
   DELETEMOVIE,
+  ALL_PATIENT_COUNT,
+  ALL_PATIENT_FIRST,
   ALL_ADMINS_COUNT,
   ALL_DOCTORS_COUNT,
   ADD_MOVIE,
@@ -15,6 +17,7 @@ import {
 import swal from "sweetalert";
 
 import { baseUrl } from "../helper/url";
+import { formatDateWithZone } from "../helper/timeHelper";
 
 export function setIsLogin(payload) {
   return {
@@ -65,6 +68,20 @@ function setAllAdminCount(payload) {
   };
 }
 
+function setAllPatientCount(payload) {
+  return {
+    type: ALL_PATIENT_COUNT,
+    payload,
+  };
+}
+
+function setAllPatientFirst(payload) {
+  return {
+    type: ALL_PATIENT_FIRST,
+    payload,
+  };
+}
+
 function setAllPatients(payload) {
   return {
     type: ALL_PATIENTS,
@@ -93,6 +110,12 @@ function itemsLoading(payload) {
   };
 }
 
+// function formatDateWithZone(date, tz) {
+//   let s = date.toLocaleString("en-GB", { timeZone: tz });
+//   let a = s.split(/\D/);
+//   return a[2] + "-" + a[1] + "-" + a[0] + " " + a[4] + ":" + a[5];
+// }
+
 //GET ALL OF DATA
 export function fetchData() {
   return function (dispatch, getState) {
@@ -111,10 +134,28 @@ export function fetchData() {
       .then((response1) => {
         let responseModified = [];
         response1.forEach((e) => {
+          const creatorName = e.creatorFkId.name || "-";
+          let updatorName = "-";
+          if (e.updatorFkId) {
+            updatorName = e.updatorFkId.name;
+          }
+          const timeVisit = formatDateWithZone(e.timeVisit, "Europe/Moscow");
+          const createdAt = formatDateWithZone(e.createdAt, "Europe/Moscow");
+          const updatedAt = formatDateWithZone(e.updatedAt, "Europe/Moscow");
           const visitorName = e.Visitor.name;
           const adminName = e.adminFkId.name;
           const doctorName = e.doctorFkId.name;
-          responseModified.push({ ...e, visitorName, adminName, doctorName });
+          responseModified.push({
+            ...e,
+            timeVisit,
+            createdAt,
+            updatedAt,
+            visitorName,
+            adminName,
+            doctorName,
+            creatorName,
+            updatorName,
+          });
         });
         dispatch(setDataVisitor(responseModified));
       })
@@ -135,6 +176,33 @@ export function fetchDataById(params) {
         "Content-Type": "application/json",
         access_token: localStorage.access_token,
       },
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error(response.statusText);
+        return response.json();
+      })
+      .then((response1) => {
+        dispatch(setDataById(response1));
+      })
+
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+}
+
+//GET ALL OF DATA
+export function editData(params, paramsBody) {
+  console.log(params, paramsBody);
+  return function (dispatch, getState) {
+    dispatch(itemsLoading());
+    fetch(`${baseUrl}/edit-visit/${params}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        access_token: localStorage.access_token,
+      },
+      body: JSON.stringify(paramsBody),
     })
       .then((response) => {
         if (!response.ok) throw new Error(response.statusText);
@@ -257,6 +325,56 @@ export function fetchAllAdminCount() {
   };
 }
 
+//GET ALL COUNT PATIENTS
+export function fetchAllPatientCount() {
+  return function (dispatch, getState) {
+    dispatch(itemsLoading());
+    fetch(`${baseUrl}/count-patient`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        access_token: localStorage.access_token,
+      },
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error(response.statusText);
+        return response.json();
+      })
+      .then((response1) => {
+        dispatch(setAllPatientCount(response1));
+      })
+
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+}
+
+//GET ALL COUNT PATIENTS
+export function fetchAllPatientFirst() {
+  return function (dispatch, getState) {
+    dispatch(itemsLoading());
+    fetch(`${baseUrl}/count-first-patient`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        access_token: localStorage.access_token,
+      },
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error(response.statusText);
+        return response.json();
+      })
+      .then((response1) => {
+        dispatch(setAllPatientFirst(response1));
+      })
+
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+}
+
 //GET ALL PATIENTS
 export function fetchAllPatients() {
   return function (dispatch, getState) {
@@ -360,7 +478,7 @@ export function fetchAllAdmins() {
   };
 }
 
-export function addNewVisit(payload) {
+export function addNewVisit(payload, setTabActive) {
   return function (dispatch, getState) {
     // dispatch(categoriesLoading());
     console.log(payload);
@@ -379,6 +497,7 @@ export function addNewVisit(payload) {
       })
       .then((response1) => {
         dispatch(setAddMovie(response1));
+        setTabActive("allData");
       })
       .catch((error) => {
         console.log(error, "INI ERRORRNYAAAA");
@@ -406,7 +525,7 @@ export function addNewPatient(payload, payload1) {
       .then((response1) => {
         console.log(payload1);
         console.log(response1);
-        dispatch(setAllPatients([...payload1, response1]));
+        dispatch(setAllPatients([response1, ...payload1]));
       })
       .catch((error) => {
         console.log(error, "INI ERRORRNYAAAA");

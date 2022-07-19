@@ -20,7 +20,7 @@ export default function Login() {
   }
 
   return (
-    <div className="container">
+    <div className="">
       <Tabs
         value={tabActive}
         onChange={handleChange}
@@ -33,6 +33,7 @@ export default function Login() {
         })}
         <Tab icon={<PersonPinIcon />} aria-label="person" value="logout" />
       </Tabs>
+      <p>Halo, {localStorage?.userName || "user"}</p>
       <ShowTabComponent tabActive={tabActive} setTabActive={setTabActive} />
     </div>
   );

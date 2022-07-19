@@ -36,6 +36,7 @@ function LoginComponent() {
       })
       .then((response1) => {
         localStorage.setItem("access_token", response1.access_token);
+        localStorage.setItem("userName", response1.name);
         if (localStorage.access_token) {
           dispatch(setIsLogin(true));
           Navigate("/");
@@ -47,7 +48,7 @@ function LoginComponent() {
   };
   return (
     <>
-      <div className="" style={{ flexDirection: "row" }}>
+      <div className="">
         <TextField
           required
           id="outlined-required"
@@ -67,11 +68,11 @@ function LoginComponent() {
             setLoginPassword({ ...loginPassword, password });
           }}
         />{" "}
+        <div className="mt-3"></div>
+        <Button onClick={loginFormHandler} variant="outlined" className="mt-2">
+          Login
+        </Button>
       </div>
-      <div className="mt-3"></div>
-      <Button onClick={loginFormHandler} variant="outlined" className="mt-2">
-        Login
-      </Button>
     </>
   );
 }

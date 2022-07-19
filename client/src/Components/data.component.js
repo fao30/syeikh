@@ -20,7 +20,7 @@ function DataComponent() {
 
   const columns = [
     { field: "id", headerName: "ID", width: 70 },
-    { field: "timeVisit", headerName: "Time Visit", width: 130 },
+    { field: "timeVisit", headerName: "Time Visit", width: 150 },
     { field: "doctorName", headerName: "Doctor Name", width: 130 },
     {
       field: "visitorName",
@@ -35,13 +35,13 @@ function DataComponent() {
       width: 130,
     },
     {
-      field: "createdBy",
+      field: "creatorName",
       headerName: "created By",
       // type: "number",
       width: 130,
     },
     {
-      field: "updateBy",
+      field: "updatorName",
       headerName: "update By",
       // type: "number",
       width: 130,
@@ -65,21 +65,21 @@ function DataComponent() {
     },
     {
       field: "createdAt",
-      headerName: "createdAt",
+      headerName: "Created At",
       // type: "number",
-      width: 130,
+      width: 150,
     },
     {
       field: "updatedAt",
-      headerName: "updatedAt",
+      headerName: "Updated At",
       // type: "number",
-      width: 130,
+      width: 150,
     },
   ];
 
   return (
     <>
-      <div style={{ marginLeft: 50, height: 400, width: "100%" }}>
+      <div style={{ marginLeft: 50, height: 400, width: 1350 }}>
         <DataGrid
           rows={dataVisits}
           columns={columns}
