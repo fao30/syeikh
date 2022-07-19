@@ -22,6 +22,7 @@ class Controller {
         res.status(200).json({
           id: user.id,
           email: user.email,
+          name: user.name,
           role: user.role,
           access_token: access_token,
         });
@@ -29,8 +30,7 @@ class Controller {
         throw { name: "unauthorized", message: "You dont have an access" };
       }
     } catch (err) {
-      console.log(err);
-      next(error);
+      next(err);
     }
   }
 
@@ -56,19 +56,60 @@ class Controller {
 
   static async registerNewVisit(req, res, next) {
     try {
+      //cari apakah udah pernah visit
       const { timeVisit, doctor, patient, isFirst, createdAt, admin } =
         req.body;
+
+      let findVisitor = await Data.findOne({
+        where: { visitorAssigned: +patient },
+      });
+
+      if (findVisitor) {
+        await Data.update(
+          {
+            isFirst: false,
+          },
+          { where: { id: findVisitor.id } }
+        );
+      }
+
       let createData = await Data.create({
         timeVisit,
         doctorAssigned: +doctor,
         visitorAssigned: +patient,
         admin: +admin,
         createdBy: req.user.id,
-        isFirst,
+        isFirst: findVisitor ? false : true,
         createdAt,
       });
       if (createData) {
         res.status(201).json(createData);
+      }
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  static async editVisit(req, res, next) {
+    try {
+      //cari apakah udah pernah visit
+      const { status, totalSpend, updatedAt, timeVisit } = req.body;
+      const { id } = req.user;
+      const { id: idVisit } = req.params;
+      console.log(req.body);
+
+      let updateData = await Data.update(
+        {
+          status,
+          timeVisit,
+          totalSpend,
+          updatedAt,
+          updateBy: id,
+        },
+        { where: { id: idVisit } }
+      );
+      if (updateData) {
+        res.status(200).json(updateData);
       }
     } catch (err) {
       next(err);
@@ -134,7 +175,10 @@ class Controller {
         where.name = {};
         where.name[Op.startsWith] = req.query.name;
       }
-      let response = await Visitor.findAll({ where });
+      let response = await Visitor.findAll({
+        where,
+        order: [["id", "DESC"]],
+      });
       res.status(200).json(response);
     } catch (err) {
       next(err);
@@ -238,6 +282,55 @@ class Controller {
         order: [["admin", "ASC"]],
       });
       res.status(200).json(response);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  //COUNT PATIENT
+  static async CountPatient(req, res, next) {
+    try {
+      let response = await Data.findAll({
+        attributes: [
+          "visitorAssigned",
+          [Sequelize.literal(`COUNT(*)`), "count"],
+        ],
+        group: ["visitorAssigned"],
+        order: [["visitorAssigned", "ASC"]],
+      });
+      res.status(200).json(response);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  //COUNT EXPENSE EVERY PATIENT
+  static async CountPatientFirst(req, res, next) {
+    try {
+      let response = await Data.findAll({
+        where: { isFirst: true },
+        attributes: ["doctorAssigned"],
+        include: [
+          {
+            model: User,
+            as: "doctorFkId",
+            attributes: ["id", "name", "email"],
+          },
+          { model: Visitor, attributes: ["id", "name", "phone"] },
+        ],
+      });
+      let doctorList = {};
+      // console.log(response);
+      response.map((e) => {
+        if (doctorList[e.doctorFkId.name] === undefined) {
+          doctorList[e.doctorFkId.name] = [e];
+          return;
+        }
+        doctorList[e.doctorFkId.name].push(e);
+        // if(doctorList.)
+      });
+      console.log(doctorList);
+      res.status(200).json(doctorList);
     } catch (err) {
       next(err);
     }

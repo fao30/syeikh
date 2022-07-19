@@ -9,6 +9,7 @@ import {
 } from "../store/actionCreator/itemAction";
 import ChartDoctor from "./chart.component";
 import ChartAdmin from "./chart-admin.component";
+import ChartPatient from "./chart-patient.component";
 
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
@@ -38,6 +39,11 @@ function AnalyticComponent() {
         >
           <FormControlLabel value="doctor" control={<Radio />} label="Doctor" />
           <FormControlLabel value="admin" control={<Radio />} label="Admin" />
+          <FormControlLabel
+            value="patient"
+            control={<Radio />}
+            label="Patient"
+          />
         </RadioGroup>
       </FormControl>
       {radioButton === "doctor" ? (
@@ -48,12 +54,27 @@ function AnalyticComponent() {
           </center>
         </>
       ) : (
+        <></>
+      )}
+      {radioButton === "admin" ? (
         <>
           <center>
             <h5>ADMIN ANALYTIC</h5>
             <ChartAdmin />
           </center>
         </>
+      ) : (
+        <></>
+      )}
+      {radioButton === "patient" ? (
+        <>
+          <center>
+            <h5>PATIENT ANALYTIC</h5>
+            <ChartPatient />
+          </center>
+        </>
+      ) : (
+        <></>
       )}
     </>
   );

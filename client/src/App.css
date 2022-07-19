@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+.container {
+  text-align: center;
+}
 .App {
   text-align: center;
 }
@@ -18,13 +21,58 @@
 }
 
 .App-header {
-  background-color: #282c34;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.container-login {
+  margin-left: 3;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  color: white;
+}
+
+.updateData {
+  width: 14%;
+  margin-left: 43%;
+  margin-top: 1%;
+  justify-content: space-between;
+}
+
+.updateOther {
+  width: 14%;
+  margin-left: 43%;
+  margin-top: 1%;
+  justify-content: space-between;
+}
+
+.container {
+  margin-left: 3;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  color: white;
+}
+
+.container-detail {
+  /* margin-left: 10%; */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  color: white;
+}
+
+.container-two {
+  margin-top: 2%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   color: white;
 }
 
