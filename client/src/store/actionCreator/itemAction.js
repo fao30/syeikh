@@ -10,6 +10,7 @@ import {
   ALL_PATIENT_COUNT,
   ALL_PATIENT_FIRST,
   ALL_ADMINS_COUNT,
+  DATA_MEDCARD_BY_PATIENT,
   ALL_DOCTORS_COUNT,
   ADD_MOVIE,
 } from "../actionType/itemActionType";
@@ -41,6 +42,13 @@ function setDataVisitor(payload) {
 function setDataById(payload) {
   return {
     type: DATA_VISITOR_BY_ID,
+    payload,
+  };
+}
+
+function setMedcardByPatient(payload) {
+  return {
+    type: DATA_MEDCARD_BY_PATIENT,
     payload,
   };
 }
@@ -184,6 +192,30 @@ export function fetchDataById(params) {
       })
       .then((response1) => {
         dispatch(setDataById(response1));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+}
+
+//GET ALL OF DATA
+export function fetchMedcardByPatient(params) {
+  return function (dispatch, getState) {
+    dispatch(itemsLoading());
+    fetch(`${baseUrl}/medcard/${params}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        access_token: localStorage.access_token,
+      },
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error(response.statusText);
+        return response.json();
+      })
+      .then((response1) => {
+        dispatch(setMedcardByPatient(response1));
       })
       .catch((error) => {
         console.log(error);

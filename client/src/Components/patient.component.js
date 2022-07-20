@@ -12,6 +12,8 @@ import TextField from "@mui/material/TextField";
 import SearchComponent from "./search.component";
 
 function PatientComponent() {
+  const Navigate = useNavigate();
+
   const dispatch = useDispatch();
   const { patientLists } = useSelector((state) => state.clinic);
   const [addForm, setAddForm] = useState(false);
@@ -55,6 +57,7 @@ function PatientComponent() {
           rowsPerPageOptions={[5]}
           onCellClick={(params, event) => {
             event.defaultMuiPrevented = true;
+            Navigate(`/medcard/${params.id}`);
           }}
         />
       </div>

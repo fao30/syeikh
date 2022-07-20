@@ -6,8 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { baseUrl } from "../store/helper/url";
 import { useNavigate } from "react-router";
 import { fetchData } from "../store/actionCreator/itemAction";
-import { Button } from "@mui/material";
-import SearchComponent from "./search.component";
 
 function DataComponent() {
   const dispatch = useDispatch();

@@ -3,6 +3,7 @@ export const DATA_VISITOR = "dataVisitors/setDataVisitors";
 export const DATA_VISITOR_BY_ID = "dataVisitorById/setDataVisitorById";
 export const ALL_DOCTORS = "allDoctors/setAllDoctors";
 export const ALL_DOCTORS_COUNT = "allDoctorsCount/setAllDoctorsCount";
+export const DATA_MEDCARD_BY_PATIENT = "dataMedcardByPatient/setDataMedcardByPatient";
 export const ALL_ADMINS_COUNT = "allAdminsCount/setAllAdminsCount";
 export const ALL_PATIENT_COUNT = "allPatientsCount/setAllPatientsCount";
 export const ALL_PATIENT_FIRST = "allPatientsFirst/setAllPatientsFirst";

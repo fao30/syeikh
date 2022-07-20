@@ -10,6 +10,7 @@ import {
   ADD_MOVIE,ALL_PATIENT_COUNT,
   ALL_DOCTORS_COUNT,
   ALL_ADMINS_COUNT,
+  DATA_MEDCARD_BY_PATIENT,
   ALL_PATIENT_FIRST
 } from "../actionType/itemActionType";
 
@@ -22,6 +23,7 @@ const initialState = {
   doctorCounts: [],
   adminCounts: [],
   patientCounts: [],
+  medcardByPatient: [],
   patientLists: [],
   singleData: {},
   patientFirst: {},
@@ -32,6 +34,13 @@ const initialState = {
 
 export default function itemReducer(state = initialState, action) {
   switch (action.type) {
+    //INI data madecard by pasien
+    case DATA_MEDCARD_BY_PATIENT:
+      return {
+        ...state,
+        isLoading: false,
+        medcardByPatient: action.payload,
+      };
     //INI ADATA VISITOR BY ID
     case DATA_VISITOR_BY_ID:
       return {

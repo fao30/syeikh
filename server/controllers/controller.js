@@ -366,6 +366,29 @@ class Controller {
     }
   }
 
+  //GET MedcardByPatientId
+  static async MedcardByPatientId(req, res, next) {
+    try {
+      console.log(req);
+      let response = await Data.findAll({
+        where: { visitorAssigned: req.params.patientId },
+        include: [
+          {
+            model: User,
+            as: "doctorFkId",
+            attributes: ["id", "name", "email"],
+          },
+          { model: Visitor, attributes: ["id", "name", "phone"] },
+        ],
+        attributes: ["id", "status", "timeVisit"],
+      });
+
+      res.status(200).json(response);
+    } catch (err) {
+      next(err);
+    }
+  }
+
   //getAllListOfDoctor
   static async listDoctors(req, res, next) {
     try {

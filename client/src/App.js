@@ -5,8 +5,7 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import VisitDetail from "./pages/VisitDetail";
 import CardExampleGroups from "./pages/MedCard";
-import 'bootstrap/dist/css/bootstrap.min.css';
-
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   return (
@@ -30,7 +29,7 @@ function App() {
             </RequireAuth>
           }
         />
-        <Route path="/medcard" element={<CardExampleGroups />} />
+        <Route path="/medcard/:id" element={<CardExampleGroups />} />
         <Route path="/login" element={<Login />}></Route>
       </Routes>
     </div>
