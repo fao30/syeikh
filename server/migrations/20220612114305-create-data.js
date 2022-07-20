@@ -1,17 +1,17 @@
-'use strict';
+"use strict";
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Data', {
+    return queryInterface.createTable("Data", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       timeVisit: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
-      doctorAssigned:  {
+      doctorAssigned: {
         type: Sequelize.INTEGER,
         references: {
           model: {
@@ -22,7 +22,7 @@ module.exports = {
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
-      doctorReference:  {
+      doctorReference: {
         type: Sequelize.INTEGER,
         allowNull: true,
         references: {
@@ -34,7 +34,7 @@ module.exports = {
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
-      visitReference:  {
+      visitReference: {
         type: Sequelize.INTEGER,
         allowNull: true,
         references: {
@@ -46,7 +46,7 @@ module.exports = {
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
-      visitorAssigned:  {
+      visitorAssigned: {
         type: Sequelize.INTEGER,
         references: {
           model: {
@@ -91,25 +91,25 @@ module.exports = {
         onDelete: "CASCADE",
       },
       isFirst: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
       totalSpend: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       status: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Data');
-  }
+    return queryInterface.dropTable("Data");
+  },
 };

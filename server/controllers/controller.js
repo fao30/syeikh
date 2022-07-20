@@ -57,10 +57,15 @@ class Controller {
   static async registerNewVisit(req, res, next) {
     try {
       //cari apakah udah pernah visit
-      const { timeVisit, doctor, patient, doctorReference, createdAt, admin } =
-        req.body;
-
-      console.log(req.body);
+      const {
+        timeVisit,
+        doctor,
+        patient,
+        doctorReference,
+        visitReference,
+        createdAt,
+        admin,
+      } = req.body;
 
       let findVisitor = await Data.findOne({
         where: { visitorAssigned: +patient },
@@ -78,6 +83,7 @@ class Controller {
       let createData = await Data.create({
         timeVisit,
         doctorAssigned: +doctor,
+        visitReference: +visitReference || null,
         doctorReference: +doctorReference || null,
         visitorAssigned: +patient,
         admin: +admin,
@@ -218,7 +224,13 @@ class Controller {
           {
             model: Data,
             as: "visitReferenceFkId",
-            // attributes: ["id", "name", "email"],
+            include: [
+              {
+                model: User,
+                as: "doctorFkId",
+                attributes: ["id", "name", "email"],
+              },
+            ],
           },
           { model: Visitor, attributes: ["id", "name", "phone"] },
         ],

@@ -4,6 +4,9 @@ import RequireAuth from "./Components/requireAuth";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import VisitDetail from "./pages/VisitDetail";
+import CardExampleGroups from "./pages/MedCard";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 function App() {
   return (
@@ -27,6 +30,7 @@ function App() {
             </RequireAuth>
           }
         />
+        <Route path="/medcard" element={<CardExampleGroups />} />
         <Route path="/login" element={<Login />}></Route>
       </Routes>
     </div>

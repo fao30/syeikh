@@ -16,7 +16,7 @@ const ChartPatientDiagram = () => {
   const [clientCount, setClientCount] = useState([]);
   const [backgroundColor, setBackgroundColor] = useState([]);
   const [dataPatientsShowOnTable, setDataPatientsShowOnTable] = useState([]);
-  const [selectedChart, setSelectedChart] = useState(0);
+  const [selectedChart, setSelectedChart] = useState(NaN);
   const chartRef = useRef();
 
   const { patientLists, patientCounts, patientFirst } = useSelector(

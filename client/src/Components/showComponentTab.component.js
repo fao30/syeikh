@@ -1,11 +1,5 @@
 import "../App.css";
-import React, { useState, useEffect } from "react";
-import { DataGrid } from "@mui/x-data-grid";
-import { setIsLogin } from "../store/actionCreator";
-import { useDispatch, useSelector } from "react-redux";
-import { baseUrl } from "../store/helper/url";
-import { useNavigate } from "react-router";
-import { fetchData } from "../store/actionCreator/itemAction";
+import React from "react";
 
 import DataComponent from "../Components/data.component";
 import UserComponent from "../Components/user.component";

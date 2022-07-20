@@ -1,12 +1,6 @@
 import "../App.css";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchAllDoctor,
-  fetchAllPatients,
-  addNewVisit,
-  fetchAllAdmins,
-} from "../store/actionCreator/itemAction";
 import ChartDoctor from "./chart.component";
 import ChartAdmin from "./chart-admin.component";
 import ChartPatient from "./chart-patient.component";
@@ -19,9 +13,9 @@ import FormLabel from "@mui/material/FormLabel";
 
 function AnalyticComponent() {
   const dispatch = useDispatch();
-  const { doctorLists, patientLists, adminLists } = useSelector(
-    (state) => state.clinic
-  );
+  // const { doctorLists, patientLists, adminLists } = useSelector(
+  //   (state) => state.clinic
+  // );
   const [radioButton, setRadioButton] = useState("doctor");
 
   return (

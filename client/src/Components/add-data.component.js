@@ -8,6 +8,7 @@ import {
   addNewVisit,
   fetchAllAdmins,
 } from "../store/actionCreator/itemAction";
+import { useNavigate } from "react-router";
 
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import Stack from "@mui/material/Stack";
@@ -20,8 +21,9 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
-function AddDataComponent({ setTabActive }) {
+function AddDataComponent({ setTabActive, visitReverenceId }) {
   const dispatch = useDispatch();
+  const Navigate = useNavigate();
   const { doctorLists, patientLists, adminLists } = useSelector(
     (state) => state.clinic
   );
@@ -41,8 +43,6 @@ function AddDataComponent({ setTabActive }) {
   }, []);
 
   function handleChange(event, params) {
-    console.log(event.target.value);
-    console.log(params.props.label);
     if (params.props.label === "doctor") {
       const doctor = event.target.value;
       setSelectValue({ ...selectValue, doctor });
@@ -52,17 +52,37 @@ function AddDataComponent({ setTabActive }) {
     } else if (params.props.label === "admin") {
       const admin = event.target.value;
       setSelectValue({ ...selectValue, admin });
-    } else if (params.props.label === "doctorReference") {
-      const doctorReference = event.target.value;
-      setSelectValue({ ...selectValue, doctorReference });
     }
+    console.log(selectValue);
   }
+
+  const navigateToHome = () => {
+    Navigate("/");
+  };
 
   const addNewData = (e) => {
     e.preventDefault();
     const createdAt = new Date();
-    setSelectValue({ ...selectValue, createdAt });
-    dispatch(addNewVisit(selectValue, setTabActive));
+    if (visitReverenceId?.id) {
+      const patient = visitReverenceId.visitorAssigned;
+      const visitReference = visitReverenceId.id;
+      const doctorReference = visitReverenceId.doctorFkId.id;
+      dispatch(
+        addNewVisit(
+          {
+            ...selectValue,
+            visitReference,
+            doctorReference,
+            patient,
+            createdAt,
+          },
+          setTabActive,
+          navigateToHome
+        )
+      );
+    } else {
+      dispatch(addNewVisit({ ...selectValue, createdAt }, setTabActive));
+    }
   };
 
   return (
@@ -87,46 +107,30 @@ function AddDataComponent({ setTabActive }) {
             })}
           </Select>
         </FormControl>
-        <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">
-            Doctor Reference
-          </InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={selectValue.doctorReference}
-            label="doctorReference"
-            onChange={handleChange}
-          >
-            {doctorLists.map((e) => {
-              return (
-                <MenuItem label="doctorReference" value={e.id}>
-                  {e.name}
-                </MenuItem>
-              );
-            })}
-          </Select>
-        </FormControl>
-        <div className="mt-4">
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Patient</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={selectValue.patient}
-              label="doctor"
-              onChange={handleChange}
-            >
-              {patientLists.map((e) => {
-                return (
-                  <MenuItem label="patient" value={e.id}>
-                    {e.name}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-          </FormControl>
-        </div>
+        {!visitReverenceId ? (
+          <div className="mt-4">
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Patient</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={selectValue.patient}
+                label="doctor"
+                onChange={handleChange}
+              >
+                {patientLists.map((e) => {
+                  return (
+                    <MenuItem label="patient" value={e.id}>
+                      {e.name}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
+          </div>
+        ) : (
+          <></>
+        )}
         <div className="mt-4">
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Admin</InputLabel>
@@ -160,9 +164,11 @@ function AddDataComponent({ setTabActive }) {
           </LocalizationProvider>
         </div>
       </Box>
-      <Button onClick={addNewData} variant="outlined" className="mt-4">
-        ADD NEW SERVICE
-      </Button>
+      <div className="mt-4 mb-4">
+        <Button onClick={addNewData} variant="outlined">
+          ADD NEW VISIT
+        </Button>
+      </div>
     </>
   );
 }

@@ -7,14 +7,12 @@ import {
   ALL_USERS,
   ALL_ADMINS,
   ISLOGIN,
-  DELETEMOVIE,
   ALL_PATIENT_COUNT,
   ALL_PATIENT_FIRST,
   ALL_ADMINS_COUNT,
   ALL_DOCTORS_COUNT,
   ADD_MOVIE,
 } from "../actionType/itemActionType";
-import swal from "sweetalert";
 
 import { baseUrl } from "../helper/url";
 import { formatDateWithZone } from "../helper/timeHelper";
@@ -187,7 +185,6 @@ export function fetchDataById(params) {
       .then((response1) => {
         dispatch(setDataById(response1));
       })
-
       .catch((error) => {
         console.log(error);
       });
@@ -481,7 +478,7 @@ export function fetchAllAdmins() {
   };
 }
 
-export function addNewVisit(payload, setTabActive) {
+export function addNewVisit(payload, setTabActive, navigateToHome) {
   return function (dispatch, getState) {
     // dispatch(categoriesLoading());
     console.log(payload);
@@ -500,7 +497,11 @@ export function addNewVisit(payload, setTabActive) {
       })
       .then((response1) => {
         dispatch(setAddMovie(response1));
-        setTabActive("allData");
+        if (!payload?.visitReference) {
+          setTabActive("allData");
+        } else {
+          navigateToHome()
+        }
       })
       .catch((error) => {
         console.log(error, "INI ERRORRNYAAAA");
