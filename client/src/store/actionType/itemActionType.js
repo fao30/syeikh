@@ -13,4 +13,5 @@ export const ALL_USERS = "allUsers/setAllUsers";
 export const SET_GENRES = "genres/setGenres";
 export const ISLOGIN = "isLogin/setIsLogin";
 export const ADD_MOVIE = "addMovie/setAddMovie";
+export const ALL_PLATFORM = "allPlatform/setAllPlatform";
 export const DELETEMOVIE = "deleteMovie/setDeleteMovie";

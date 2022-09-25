@@ -13,6 +13,7 @@ import {
   DATA_MEDCARD_BY_PATIENT,
   ALL_DOCTORS_COUNT,
   ADD_MOVIE,
+  ALL_PLATFORM
 } from "../actionType/itemActionType";
 
 import { baseUrl } from "../helper/url";
@@ -95,6 +96,13 @@ function setAllPatients(payload) {
   };
 }
 
+function setPlatform(payload) {
+  return {
+    type: ALL_PLATFORM,
+    payload,
+  };
+}
+
 function setAllUsers(payload) {
   return {
     type: ALL_USERS,
@@ -165,7 +173,6 @@ export function fetchData() {
             doctorReferenceName,
           });
         });
-        console.log(responseModified);
         dispatch(setDataVisitor(responseModified));
       })
 
@@ -225,7 +232,6 @@ export function fetchMedcardByPatient(params) {
 
 //GET ALL OF DATA
 export function editData(params, paramsBody) {
-  console.log(params, paramsBody);
   return function (dispatch, getState) {
     dispatch(itemsLoading());
     fetch(`${baseUrl}/edit-visit/${params}`, {
@@ -433,9 +439,34 @@ export function fetchAllPatients() {
   };
 }
 
+//GET ALL PATIENTS
+export function fetchAllCountPlatform() {
+  return function (dispatch, getState) {
+    dispatch(itemsLoading());
+    fetch(`${baseUrl}/count-platform`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        access_token: localStorage.access_token,
+      },
+      // body: JSON.stringify({ payload }),
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error(response.statusText);
+        return response.json();
+      })
+      .then((response1) => {
+        dispatch(setPlatform(response1));
+      })
+
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+}
+
 //GET ALL PATIENTS BY NAME
 export function fetchAllPatientsByName(payload) {
-  console.log(payload);
   return function (dispatch, getState) {
     dispatch(itemsLoading());
     fetch(`${baseUrl}/all-visitor?name=${payload}`, {
@@ -475,7 +506,6 @@ export function fetchAllUsers() {
         return response.json();
       })
       .then((response1) => {
-        console.log(response1);
         dispatch(setAllUsers(response1));
       })
 
@@ -512,8 +542,6 @@ export function fetchAllAdmins() {
 
 export function addNewVisit(payload, setTabActive, navigateToHome) {
   return function (dispatch, getState) {
-    // dispatch(categoriesLoading());
-    console.log(payload);
     fetch(`${baseUrl}/register-new-visit`, {
       method: "POST",
       headers: {
@@ -544,7 +572,6 @@ export function addNewVisit(payload, setTabActive, navigateToHome) {
 export function addNewPatient(payload, payload1) {
   return function (dispatch, getState) {
     // dispatch(categoriesLoading());
-    console.log(payload);
     fetch(`${baseUrl}/register-visitor`, {
       method: "POST",
       headers: {
@@ -559,7 +586,6 @@ export function addNewPatient(payload, payload1) {
         return response.json();
       })
       .then((response1) => {
-        console.log(payload1);
         console.log(response1);
         dispatch(setAllPatients([response1, ...payload1]));
       })

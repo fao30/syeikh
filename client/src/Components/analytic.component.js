@@ -10,6 +10,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
+import ChartPlatformDiagram from "./chart-platform.component";
 
 function AnalyticComponent() {
   const dispatch = useDispatch();
@@ -38,6 +39,11 @@ function AnalyticComponent() {
             control={<Radio />}
             label="Patient"
           />
+          <FormControlLabel
+            value="platform"
+            control={<Radio />}
+            label="Platform"
+          />
         </RadioGroup>
       </FormControl>
       {radioButton === "doctor" ? (
@@ -65,6 +71,16 @@ function AnalyticComponent() {
           <center>
             <h5>PATIENT ANALYTIC</h5>
             <ChartPatient />
+          </center>
+        </>
+      ) : (
+        <></>
+      )}
+      {radioButton === "platform" ? (
+        <>
+          <center>
+            <h5>PLATFORM ANALYTIC</h5>
+            <ChartPlatformDiagram />
           </center>
         </>
       ) : (

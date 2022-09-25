@@ -11,7 +11,8 @@ import {
   ALL_DOCTORS_COUNT,
   ALL_ADMINS_COUNT,
   DATA_MEDCARD_BY_PATIENT,
-  ALL_PATIENT_FIRST
+  ALL_PATIENT_FIRST,
+  ALL_PLATFORM
 } from "../actionType/itemActionType";
 
 const initialState = {
@@ -26,6 +27,7 @@ const initialState = {
   medcardByPatient: [],
   patientLists: [],
   singleData: {},
+  platformCount: [],
   patientFirst: {},
   isLoading: true,
   isLogin: false,
@@ -96,6 +98,13 @@ export default function itemReducer(state = initialState, action) {
         ...state,
         isLoading: false,
         dataVisits: action.payload,
+      };
+    //INI DATA VISIT
+    case ALL_PLATFORM:
+      return {
+        ...state,
+        isLoading: false,
+        platformCount: action.payload,
       };
     //INI DATA VISIT
     case ALL_DOCTORS:

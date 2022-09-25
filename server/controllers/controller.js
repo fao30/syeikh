@@ -354,22 +354,26 @@ class Controller {
   //COUNT INCOME BASED ON PLATFORM
   static async CountPlatformIncome(req, res, next) {
     try {
-      // const { platform } = req.query
-      // console.log(platform);
       const platformReturn = {}
       let response = await Visitor.findAll();
 
+      const hasil = []
       for (const data of response) {
         let getData = await Data.findOne({
           where: {
-            visitorAssigned: data.id
+            [Op.and]: [{ 
+              visitorAssigned: data.id 
+            }, { 
+              totalSpend: {
+              [Op.not]: null
+            } 
+          }]
           },
           order: [
             ['id', 'ASC'],
           ],
         });
-        console.log(getData);
-        
+
         if(getData){
           if(platformReturn[data.platform] === undefined){
             platformReturn[data.platform] = getData.totalSpend === null? 0: +getData.totalSpend
@@ -378,8 +382,17 @@ class Controller {
           }
         }
       }
+      for (const [key, value] of Object.entries(platformReturn)) {
+        hasil.push({
+          platform: key,
+          value: value
+        })
+      }
+      hasil.forEach((e,i) => {
+        hasil[i].id = i+1 
+      });
 
-      res.status(200).json(platformReturn);
+      res.status(200).json(hasil);
     } catch (err) {
       next(err);
     }
