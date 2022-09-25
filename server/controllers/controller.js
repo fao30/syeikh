@@ -358,17 +358,17 @@ class Controller {
       // console.log(platform);
       const platformReturn = {}
       let response = await Visitor.findAll();
-      let hasil = []
 
       for (const data of response) {
         let getData = await Data.findOne({
           where: {
-            visitorAssigned: 4
+            visitorAssigned: data.id
           },
           order: [
             ['id', 'ASC'],
           ],
         });
+        console.log(getData);
         
         if(getData){
           if(platformReturn[data.platform] === undefined){
