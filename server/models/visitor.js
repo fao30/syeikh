@@ -16,7 +16,13 @@ module.exports = (sequelize, DataTypes) => {
   };
   Visitor.init({
     name: DataTypes.STRING,
-    phone: DataTypes.STRING,
+    familyName: DataTypes.STRING,
+    phone: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true
+    },
+    platform: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Visitor',

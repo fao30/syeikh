@@ -34,9 +34,11 @@ function PatientComponent() {
   const columns = [
     { field: "id", headerName: "ID", width: 70 },
     { field: "name", headerName: "Name", width: 130 },
+    { field: "familyName", headerName: "Last Name", width: 130 },
     { field: "phone", headerName: "Phone Number", width: 130 },
+    { field: "platform", headerName: "Platform", width: 130 },
     { field: "address", headerName: "Address", width: 130 },
-  ];
+  ];  
 
   return (
     <>

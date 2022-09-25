@@ -79,6 +79,10 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     isFirst: DataTypes.BOOLEAN,
+    wasWithDoctor: {
+      type: DataTypes.BOOLEAN,
+      defaultValue:false
+    },
     totalSpend: DataTypes.INTEGER,
     status: DataTypes.STRING
   }, {

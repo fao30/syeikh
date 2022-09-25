@@ -24,7 +24,7 @@ import Select from "@mui/material/Select";
 function AddDataComponent({ setTabActive, visitReverenceId }) {
   const dispatch = useDispatch();
   const Navigate = useNavigate();
-  const { doctorLists, patientLists, adminLists } = useSelector(
+  const { doctorLists, patientLists, adminLists, platformList } = useSelector(
     (state) => state.clinic
   );
   const [selectValue, setSelectValue] = useState({});

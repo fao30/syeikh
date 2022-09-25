@@ -11,8 +11,15 @@ module.exports = {
       name: {
         type: Sequelize.STRING
       },
-      phone: {
+      familyName: {
         type: Sequelize.STRING
+      },
+      phone: {
+        type: Sequelize.STRING,
+        unique: true
+      },
+      platform: {
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,

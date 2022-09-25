@@ -30,22 +30,30 @@ class Controller {
         throw { name: "unauthorized", message: "You dont have an access" };
       }
     } catch (err) {
+      res.status(401).json(
+        err
+      );
       next(err);
     }
   }
 
   static async registerVisitor(req, res, next) {
     try {
-      const { name, phone } = req.body;
+      const { name,familyName, phone, platform } = req.body;
+      console.log();
       let createVisitor = await Visitor.create({
         name,
+        familyName,
         phone,
+        platform
       });
       if (createVisitor) {
         res.status(201).json({
           id: createVisitor.id,
           name: createVisitor.name,
+          familyName: createVisitor.familyName,
           phone: createVisitor.phone,
+          platform: createVisitor.platform,
         });
       }
       res.status(200).json(response);
@@ -66,9 +74,17 @@ class Controller {
         createdAt,
         admin,
       } = req.body;
+      console.log(req.body);
 
       let findVisitor = await Data.findOne({
         where: { visitorAssigned: +patient },
+      });
+
+      let wasWithDoctor = await Data.findOne({
+        where: {
+           doctorAssigned: +doctor,
+           visitorAssigned: +patient
+         },
       });
 
       if (findVisitor) {
@@ -89,6 +105,7 @@ class Controller {
         admin: +admin,
         createdBy: req.user.id,
         isFirst: findVisitor ? false : true,
+        wasWithDoctor: wasWithDoctor? true:false,
         createdAt,
       });
       if (createData) {
@@ -334,6 +351,40 @@ class Controller {
     }
   }
 
+  //COUNT INCOME BASED ON PLATFORM
+  static async CountPlatformIncome(req, res, next) {
+    try {
+      // const { platform } = req.query
+      // console.log(platform);
+      const platformReturn = {}
+      let response = await Visitor.findAll();
+      let hasil = []
+
+      for (const data of response) {
+        let getData = await Data.findOne({
+          where: {
+            visitorAssigned: 4
+          },
+          order: [
+            ['id', 'ASC'],
+          ],
+        });
+        
+        if(getData){
+          if(platformReturn[data.platform] === undefined){
+            platformReturn[data.platform] = getData.totalSpend === null? 0: +getData.totalSpend
+          }else{
+            platformReturn[data.platform] += getData.totalSpend === null? 0: +getData.totalSpend
+          }
+        }
+      }
+
+      res.status(200).json(platformReturn);
+    } catch (err) {
+      next(err);
+    }
+  }
+
   //COUNT EXPENSE EVERY PATIENT
   static async CountPatientFirst(req, res, next) {
     try {
@@ -359,7 +410,6 @@ class Controller {
         doctorList[e.doctorFkId.name].push(e);
         // if(doctorList.)
       });
-      console.log(doctorList);
       res.status(200).json(doctorList);
     } catch (err) {
       next(err);
@@ -369,7 +419,6 @@ class Controller {
   //GET MedcardByPatientId
   static async MedcardByPatientId(req, res, next) {
     try {
-      console.log(req);
       let response = await Data.findAll({
         where: { visitorAssigned: req.params.patientId },
         include: [

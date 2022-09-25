@@ -21,6 +21,7 @@ router.get("/count-doctor", userAut, Controller.Count); //get all list of doctor
 router.get("/count-admin", Controller.CountAdmin); //get all list of doctors
 router.get("/count-patient", Controller.CountPatient); //get all list of doctors
 router.get("/count-first-patient", Controller.CountPatientFirst); //get all list of doctors
+router.get("/count-platform", Controller.CountPlatformIncome); //get all list Platform
 router.get("/medcard/:patientId", Controller.MedcardByPatientId); //get all list of doctors
 
 module.exports = router;

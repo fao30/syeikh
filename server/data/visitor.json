@@ -1,11 +1,15 @@
 [
     {
       "name": "Fakhrul",
-      "phone": "+79874837324"
+      "familyName": "Arifin",
+      "phone": "+79869048562",
+      "platform": "2gis"
     },
     {
       "name": "Joli",
-      "phone": "+79838943434"
+      "familyName": "Ali",
+      "phone": "+79838943434",
+      "platform": "prodoktor"
     }
 ]
   

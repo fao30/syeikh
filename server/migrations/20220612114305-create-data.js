@@ -92,6 +92,10 @@ module.exports = {
       },
       isFirst: {
         type: Sequelize.BOOLEAN,
+        allowNull: false,
+      },
+      wasWithDoctor: {
+        type: Sequelize.BOOLEAN,
       },
       totalSpend: {
         type: Sequelize.INTEGER,
